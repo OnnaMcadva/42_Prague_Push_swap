@@ -6,7 +6,7 @@
 #    By: annavm <annavm@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/26 18:30:09 by annavm            #+#    #+#              #
-#    Updated: 2024/04/27 18:40:12 by annavm           ###   ########.fr        #
+#    Updated: 2024/04/28 22:01:00 by annavm           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,14 +27,18 @@ LIBFT_NAME   = libft.a
 LIBFT        = $(LIBFT_DIR)$(LIBFT_NAME)
 
 NAME         = push_swap
+BONUS_NAME   = checker
 CC           = cc
 FLAGS        = -Wall -Werror -Wextra -g
 SRC          = arg_check.c utils.c ft_list.c push.c \
                reverse_rotate.c rotate.c simple_2_3.c \
                simple_4_5.c stack_sort.c stack_index.c \
-               swap.c main.c \
+               swap.c push_swap.c \
+
+BONUS_SRC    = checker.c
 
 OBJ          = $(SRC:.c=.o)
+BONUS_OBJ    = $(BONUS_SRC:.c=.o)
 
 # Цели
 all: $(LIBFT) $(NAME)
@@ -51,20 +55,23 @@ $(NAME): $(OBJ) $(LIBFT)
 	@echo "\t[ $(GREEN)✔$(DEF_COLOR) ]\t$(GREEN_BR)$(NAME) is ready!$(DEF_COLOR)"
 	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) $(MLXFLAGS) $(LIBFT)  -s
 
+$(BONUS_NAME): $(BONUS_OBJ) $(LIBFT)
+	@$(RM) $(BONUS_NAME)
+	@echo "\t[ $(GREEN)✔$(DEF_COLOR) ]\t$(GREEN_BR)$(BONUS_NAME) is ready!$(DEF_COLOR)"
+	@$(CC) $(FLAGS) $(BONUS_OBJ) -o $(BONUS_NAME) $(LIBFT)  -s
 
 clean:
 	@echo "\t[ $(GREEN)✔$(DEF_COLOR) ]\t$(YELLOW)Removing libft$(DEF_COLOR)"
 	@make clean -s -C $(LIBFT_DIR)
-	@$(RM) $(OBJ)
+	@$(RM) $(OBJ) $(BONUS_OBJ)
 
 fclean: clean
-	@echo "\t[ $(GREEN)✔$(DEF_COLOR) ]\t$(RED)Removing $(NAME)...$(DEF_COLOR)"
-	@$(RM) $(NAME)
+	@echo "\t[ $(GREEN)✔$(DEF_COLOR) ]\t$(RED)Removing $(NAME) ...$(DEF_COLOR)"
+	@$(RM) $(NAME) $(BONUS_NAME)
 	@$(RM) $(LIBFT_DIR)$(LIBFT_NAME)
 
 re: fclean all
-	@echo "\t[ $(GREEN)✔$(DEF_COLOR) ]\t$(BLUE)Cleaned and rebuilt everything for $(NAME).$(DEF_COLOR)"
+	@echo "\t[ $(GREEN)✔$(DEF_COLOR) ]\t$(BLUE)Cleaned and rebuilt everything for $(NAME) and $(BONUS_NAME).$(DEF_COLOR)"
 
 # Phony targets
-.PHONY: all clean fclean re
-
+.PHONY: all clean fclean re bonus
